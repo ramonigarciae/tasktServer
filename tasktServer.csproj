@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -10,6 +10,7 @@
     <AssemblyName>tasktServer</AssemblyName>
     <RootNamespace>tasktServer</RootNamespace>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <OutputType>WinExe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -60,5 +61,7 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="http://json.schemastore.org/BizTalkServerApplicationSchema" /></VisualStudio></ProjectExtensions>
 
 </Project>

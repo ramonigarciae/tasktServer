@@ -15,6 +15,7 @@ export default class AddAssignment extends React.Component {
             selectedScript: '',
             selectedWorker: '',
             workerLastCheckIn: '',
+            assignmentName:'',
             assignmentEnabled: '',
             assignmentFrequency: 5,
             assignmentInterval: 0,
@@ -31,8 +32,10 @@ export default class AddAssignment extends React.Component {
 
     }
 
-    updateAssignmentName() {
+    updateAssignmentName(input) {
 
+        console.log.input;
+        this.setState({ assignmentName: input.target.value })
     }
     updateAssignmentEnabled() {
 
@@ -108,30 +111,39 @@ export default class AddAssignment extends React.Component {
             return;
         }
 
-
+        /*
         this.setState({
             newTaskModalOpen: false,
         });
+        */
 
+        const item = {
+            assignmentName: this.state.assignmentName,
+            frequency: this.state.assignmentFrequency,
+            interval: this.state.assignmentInterval,
+            enabled: true, //this.state.assignmentEnabled,
+            assignedWorker: this.state.selectedWorker,
+            publishedScriptID: this.state.selectedScript
+        };
+        const itemJson = JSON.stringify(item);
+        debugger;
         fetch('/api/Assignments/Add', {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
+
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                assignmentName: this.state.assignmentName,
-                frequency: this.state.assignmentFrequency,
-                interval: this.state.assignmentInterval,
-                enabled: this.state.assignmentEnabled,
-                assignedWorker: this.state.selectedWorker,
-                publishedScriptID: this.state.selectedScript,
-            })
-        },
+            body: itemJson
+        }).then(
+            (result) => {
+                this.setState({
+                    newTaskModalOpen: false,
+                });
+            },
             (error) => {
                 alert(error);
                 console.log(error);
-            })
+            });
 
 
 
@@ -213,7 +225,7 @@ export default class AddAssignment extends React.Component {
 
                             <FormGroup controlId="assignmentName">
                                 <ControlLabel><Glyphicon glyph='user' />Enter Assignment Name</ControlLabel>
-                                <FormControl type="text" placeholder="My Assignment" />
+                                <FormControl type="text" placeholder="My Assignment" onChange={this.updateAssignmentName} />
                             </FormGroup>
 
 

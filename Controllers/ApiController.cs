@@ -551,14 +551,33 @@ namespace tasktServer.Controllers
         {
             using (var context = new Models.tasktDatabaseContext())
             {
-                context.Assignments.Add(assignment);
-                context.SaveChanges();
-                return Ok(assignment);
+                if (assignment != null)
+                {
+                    DateTime now = DateTime.Now;
+                    if(assignment.Interval == Assignment.TimeInterval.Seconds)
+                    {
+                        now.AddSeconds(assignment.Frequency);
+                    }else if(assignment.Interval == Assignment.TimeInterval.Minutes)
+                    {
+                        now.AddMinutes(assignment.Frequency);
+                    }else if(assignment.Interval == Assignment.TimeInterval.Days)
+                    {
+                        now.AddMonths(assignment.Frequency);
+                    }else if(assignment.Interval == Assignment.TimeInterval.Months)
+                    {
+                        now.AddMonths(assignment.Frequency);
+                    }
 
+                    assignment.NewTaskDue = now;
+                    context.Assignments.Add(assignment);
+                    context.SaveChanges();
+                    return Ok(assignment);
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
-
-
-
         }
         [HttpPost("/api/BotStore/Add")]
         public IActionResult AddDataToBotStore([FromBody] BotStoreModel storeData)
